@@ -1,11 +1,13 @@
 {
+   "name":"api-todo-list",
    "version":2,
-   "builds": [
+   "public":true,
+   "build": 
     {
         "src":"./server.js",
         "use":"@vercel/node"
     }
-   ],
+   ,
    "routes":[
     {
         "src": "/(.*)",
