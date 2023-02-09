@@ -32,7 +32,7 @@ app.get('/', (req, res) => {
   res.send('api rodando');
 });
 
-app.get('/user', (req, res) => {
+app.post('/user', (req, res) => {
   if (!req.body.id) {
     return res.json({});
   }
