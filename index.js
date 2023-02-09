@@ -92,6 +92,7 @@ app.post('/logout', (req, res) => {
 
 app.get('/todos', (req, res) => {
   // const payload = jwt.verify(req.cookies.token, secret);
+  console.log(req.body.id)
 
   Todo.where({user: new mongoose.Types.ObjectId(req.body.id)})
   .find((err, todos) => {
