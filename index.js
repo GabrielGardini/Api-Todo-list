@@ -24,8 +24,7 @@ app.use(cookieParser());
 app.use(bodyParser.json({extended:true}));
 app.use(cors({
   credentials:true,
-  // origin: 'https://todo-list-one-swart.vercel.app',
-  origin: 'http://localhost:3001',
+  origin: 'https://todo-list-one-swart.vercel.app/',
 }));
 
 app.get('/', (req, res) => {
