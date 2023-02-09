@@ -94,7 +94,7 @@ app.get('/todos', (req, res) => {
   // const payload = jwt.verify(req.cookies.token, secret);
   console.log(req.body.id)
 
-  Todo.where({user: new mongoose.Types.ObjectId(req.body.id)})
+  Todo.where({user: new mongoose.Types.ObjectId("63e45bdabf53121b2b332b49")})
   .find((err, todos) => {
     res.json(todos);
   })
