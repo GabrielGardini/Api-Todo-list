@@ -90,11 +90,11 @@ app.post('/logout', (req, res) => {
   res.cookie('token', '').send();
 });
 
-app.get('/todos', (req, res) => {
+app.post('/todoslist', (req, res) => {
   // const payload = jwt.verify(req.cookies.token, secret);
   console.log(req.body.id)
 
-  Todo.where({user: new mongoose.Types.ObjectId("63e45bdabf53121b2b332b49")})
+  Todo.where({user: new mongoose.Types.ObjectId(req.body.id)})
   .find((err, todos) => {
     res.json(todos);
   })
