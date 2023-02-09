@@ -24,8 +24,8 @@ app.use(cookieParser());
 app.use(bodyParser.json({extended:true}));
 app.use(cors({
   credentials:true,
-  // origin: 'https://todo-list-one-swart.vercel.app',
   origin: 'https://todo-list-one-swart.vercel.app',
+  // origin: 'http://localhost:3001',
 }));
 
 app.get('/', (req, res) => {
@@ -33,11 +33,11 @@ app.get('/', (req, res) => {
 });
 
 app.get('/user', (req, res) => {
-  if (!req.cookies.token) {
+  if (!req.body.id) {
     return res.json({});
   }
-  const payload = jwt.verify(req.cookies.token, secret);
-  User.findById(payload.id)
+  // const payload = jwt.verify(req.cookies.token, secret);
+  User.findById(req.body.id)
     .then(userInfo => {
       if (!userInfo) {
         return res.json({});
@@ -91,19 +91,20 @@ app.post('/logout', (req, res) => {
 });
 
 app.get('/todos', (req, res) => {
-  const payload = jwt.verify(req.cookies.token, secret);
-  Todo.where({user: new mongoose.Types.ObjectId(payload.id)})
+  // const payload = jwt.verify(req.cookies.token, secret);
+
+  Todo.where({user: new mongoose.Types.ObjectId(req.body.id)})
   .find((err, todos) => {
     res.json(todos);
   })
 })
 
 app.put('/todos', (req, res) =>{
-  const payload = jwt.verify(req.cookies.token, secret);
+  // const payload = jwt.verify(req.cookies.token, secret);
   const todo = new Todo({
     text:req.body.text,
     done:false,
-    user:new mongoose.Types.ObjectId(payload.id),
+    user:new mongoose.Types.ObjectId(req.body.id),
   });
   todo.save().then(todo => {
     res.json(todo);
@@ -111,10 +112,10 @@ app.put('/todos', (req, res) =>{
 })
 
 app.post('/todos', (req, res) =>{
-  const payload = jwt.verify(req.cookies.token, secret);
+  // const payload = jwt.verify(req.cookies.token, secret);
   Todo.deleteOne({
      _id:new mongoose.Types.ObjectId(req.body.id),
-     user:new mongoose.Types.ObjectId(payload.id)
+     user:new mongoose.Types.ObjectId(req.body.userId)
     }).then(() => {
       res.sendStatus(200);
     })
