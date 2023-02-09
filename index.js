@@ -25,7 +25,7 @@ app.use(bodyParser.json({extended:true}));
 app.use(cors({
   credentials:true,
   // origin: 'https://todo-list-one-swart.vercel.app',
-  origin: 'https://todo-list-one-swart.vercel.app',
+  origin: '*',
 }));
 
 app.get('/', (req, res) => {
