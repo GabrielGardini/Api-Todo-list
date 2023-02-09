@@ -7,6 +7,7 @@ import User from "./models/User.js";
 import bcrypt from 'bcrypt';
 import cors from 'cors';
 import jwt from 'jsonwebtoken';
+import Todo from './models/Todo.js';
 
 const secret = 'secret123';
 
@@ -23,6 +24,7 @@ app.use(cookieParser());
 app.use(bodyParser.json({extended:true}));
 app.use(cors({
   credentials:true,
+  // origin: 'https://todo-list-one-swart.vercel.app',
   origin: 'https://todo-list-one-swart.vercel.app',
 }));
 
@@ -87,5 +89,35 @@ app.post('/login', (req, res) => {
 app.post('/logout', (req, res) => {
   res.cookie('token', '').send();
 });
+
+app.get('/todos', (req, res) => {
+  const payload = jwt.verify(req.cookies.token, secret);
+  Todo.where({user: new mongoose.Types.ObjectId(payload.id)})
+  .find((err, todos) => {
+    res.json(todos);
+  })
+})
+
+app.put('/todos', (req, res) =>{
+  const payload = jwt.verify(req.cookies.token, secret);
+  const todo = new Todo({
+    text:req.body.text,
+    done:false,
+    user:new mongoose.Types.ObjectId(payload.id),
+  });
+  todo.save().then(todo => {
+    res.json(todo);
+  })
+})
+
+app.post('/todos', (req, res) =>{
+  const payload = jwt.verify(req.cookies.token, secret);
+  Todo.deleteOne({
+     _id:new mongoose.Types.ObjectId(req.body.id),
+     user:new mongoose.Types.ObjectId(payload.id)
+    }).then(() => {
+      res.sendStatus(200);
+    })
+})
 
 app.listen(4000);
